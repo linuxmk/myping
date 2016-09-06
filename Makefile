@@ -1,7 +1,11 @@
-myping: myping.c 
-	gcc -o myping myping.c error.c -I. -Wall -ggdb
+myping: error.o signal.o
+	gcc myping.c signal.o error.o  -o myping
 
-.PHONY: clean
+error.o: error.c
+	gcc -c error.c
+
+signal.o: signal.c
+	gcc -c signal.c
 
 clean:
-	rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~ myping
+	rm *.o core *~
