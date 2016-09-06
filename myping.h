@@ -5,7 +5,7 @@
 #include "linuxsyscall.h"
 #include "error.h"
 #include "signal.h"
-
+#include "socket.h"
 
 int verbose;
 char *host;
