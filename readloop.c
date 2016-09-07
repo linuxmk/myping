@@ -45,7 +45,7 @@ void readloop(void)
 				err_sys("recvmsg error");
 		}
 		gettimeofday(&tval, NULL);
-		fprintf(stderr, "%s\n", msg.msg_iov.iov_base);
+		//fprintf(stderr, "%s\n", msg.msg_iov.iov_base);
 		(*pr->fproc)(recvbuf, n, &msg, &tval);
 	}
 }
