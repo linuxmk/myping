@@ -23,4 +23,4 @@ readloop.o: readloop.c
 	gcc -c readloop.c
 
 clean:
-	rm *.o core *~
+	rm *.o core *~ myping

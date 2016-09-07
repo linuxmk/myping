@@ -12,7 +12,7 @@ extern int verbose;
 static void tv_sub (struct timeval *out, struct timeval *in);
 uint16_t in_cksum(uint16_t * addr, int len);
 
-void proc_v4 (char *ptr, ssize_t len, struct msghdr *msg, struct timeval *tvrecv)
+void proc_v4 ( ssize_t len, struct msghdr *msg, struct timeval *tvrecv)
 {
 	int hlenl, icmplen;
 	struct ip *ip;
@@ -21,12 +21,12 @@ void proc_v4 (char *ptr, ssize_t len, struct msghdr *msg, struct timeval *tvrecv
 	double rtt;
 	char host[128];
 
-	ip = (struct ip*) ptr;
+	ip = (struct ip*) msg->msg_iov->iov_base; //ptr;
 	hlenl = ip->ip_hl << 2;
 	if( ip->ip_p != IPPROTO_ICMP)
 		return;
 
-	icmp = (struct icmp *) (ptr +hlenl);
+	icmp = (struct icmp *) (/*ptr*/ msg->msg_iov->iov_base +hlenl);
 	if( ( icmplen = len - hlenl) < 8)
 		return;
 

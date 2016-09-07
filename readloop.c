@@ -46,6 +46,6 @@ void readloop(void)
 		}
 		gettimeofday(&tval, NULL);
 		//fprintf(stderr, "%s\n", msg.msg_iov.iov_base);
-		(*pr->fproc)(recvbuf, n, &msg, &tval);
+		(*pr->fproc)( n, &msg, &tval);
 	}
 }
