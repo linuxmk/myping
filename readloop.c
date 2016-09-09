@@ -1,6 +1,8 @@
 #include "myping.h"
+#include "wrapthread.h"
 
 extern int sockfd;
+void * sendIcmp(void *arg);
 
 void readloop(void)
 {
@@ -11,6 +13,7 @@ void readloop(void)
 	struct msghdr msg;
 	ssize_t n;
 	struct timeval tval;
+	pthread_t tid;
 
 	sockfd = socket(pr->sasend->sa_family, SOCK_RAW, pr->icmpproto);
 	if(sockfd < 0)
@@ -23,7 +26,7 @@ void readloop(void)
 	size = 60 * 1024;
 	setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &size, sizeof(size));
 
-	sig_alrm(SIGALRM);
+	//sig_alrm(SIGALRM);
 
 	iov.iov_base = recvbuf;	
 	iov.iov_len = sizeof(recvbuf);
@@ -31,6 +34,8 @@ void readloop(void)
 	msg.msg_iov = &iov;
 	msg.msg_iovlen = 1;
 	msg.msg_control = controlbuf;
+	
+	Pthread_create(&tid, NULL, sendIcmp, NULL);
 
 	for( ; ; )
 	{
@@ -48,4 +53,17 @@ void readloop(void)
 		//fprintf(stderr, "%s\n", msg.msg_iov.iov_base);
 		(*pr->fproc)( n, &msg, &tval);
 	}
+}
+
+void * sendIcmp(void *arg)
+{
+	Pthread_detach(pthread_self());
+
+	while(1)
+	{
+		(*pr->fsend)();	
+		sleep(1);
+	}
+	
+return NULL;
 }

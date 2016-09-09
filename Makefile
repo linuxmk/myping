@@ -1,5 +1,5 @@
-myping: myping.o error.o signal.o host_serv.o sock_ntop_host.o proc_v4.o readloop.o
-	gcc myping.o signal.o host_serv.o error.o sock_ntop_host.o proc_v4.o readloop.o -o myping -Wall -ggdb
+myping: myping.o error.o signal.o host_serv.o sock_ntop_host.o proc_v4.o readloop.o wrapthread.o
+	gcc myping.o signal.o host_serv.o error.o sock_ntop_host.o proc_v4.o readloop.o wrapthread.o -o myping -Wall -ggdb -pthread
 
 myping.o: myping.c
 	gcc -c myping.c
@@ -21,6 +21,9 @@ proc_v4.o: proc_v4.c
 
 readloop.o: readloop.c
 	gcc -c readloop.c
+
+wrapthread.o: wrapthread.c
+	gcc -c wrapthread.c
 
 clean:
 	rm *.o core *~ myping
